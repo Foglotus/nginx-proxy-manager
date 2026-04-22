@@ -7,6 +7,7 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
+		"acme-cli": "node acme-cli/index.js",
 		"lint": "biome lint",
 		"prettier": "biome format --write .",
 		"validate-schema": "node validate-schema.js",
@@ -23,6 +24,7 @@
 		"compression": "^1.8.1",
 		"express": "^5.2.1",
 		"express-fileupload": "^1.5.2",
+		"fast-xml-parser": "^5.5.6",
 		"gravatar": "^1.8.2",
 		"jsonwebtoken": "^9.0.3",
 		"knex": "3.1.0",

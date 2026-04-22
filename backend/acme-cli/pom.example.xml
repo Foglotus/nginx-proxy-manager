@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>local.acme</groupId>
+  <artifactId>certbot-cli-config</artifactId>
+  <version>1.0.0</version>
+
+  <acme>
+    <email>ops@example.com</email>
+    <domains>
+      <domain>example.com</domain>
+      <domain>www.example.com</domain>
+    </domains>
+
+    <!-- http or dns -->
+    <challenge>http</challenge>
+    <webroot>/var/www/acme-challenge</webroot>
+
+    <outputDir>/opt/certs/live</outputDir>
+    <certAlias>example-prod</certAlias>
+    <certName>example-prod</certName>
+
+    <staging>false</staging>
+    <renewBeforeDays>30</renewBeforeDays>
+    <checkIntervalMinutes>60</checkIntervalMinutes>
+    <retryCount>2</retryCount>
+    <retryDelaySeconds>10</retryDelaySeconds>
+
+    <archiveEnabled>true</archiveEnabled>
+    <archiveDir>/opt/certs/archive</archiveDir>
+    <stateFile>/opt/certs/.acme-state.json</stateFile>
+
+    <certbotCommand>certbot</certbotCommand>
+    <letsencryptConfig>/etc/letsencrypt.ini</letsencryptConfig>
+    <certbotWorkDir>/tmp/letsencrypt-lib</certbotWorkDir>
+    <certbotLogsDir>/var/log/letsencrypt</certbotLogsDir>
+
+    <extraArgs>
+      <!-- 示例：<arg>--preferred-chain</arg><arg>ISRG Root X1</arg> -->
+    </extraArgs>
+
+    <!-- DNS challenge 配置，仅 challenge=dns 时需要 -->
+    <dns>
+      <provider>cloudflare</provider>
+      <credentials><![CDATA[
+dns_cloudflare_api_token=replace_with_real_token
+      ]]></credentials>
+      <propagationSeconds>30</propagationSeconds>
+    </dns>
+  </acme>
+</project>
