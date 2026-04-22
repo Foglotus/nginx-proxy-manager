@@ -77,7 +77,7 @@ await atomicWrite(keyFile, keyBody, 0o600);
 
 if (config.archiveEnabled) {
 await fs.promises.mkdir(config.archiveDir, { recursive: true });
-const stamp = new Date().toISOString().replaceAll(":", "").replaceAll("-", "").replace(".", "_");
+		const stamp = new Date().toISOString().replace(/[:-]/g, "").replace(/\./g, "_");
 const archiveCert = path.join(config.archiveDir, `${config.certAlias}-${stamp}.crt`);
 const archiveKey = path.join(config.archiveDir, `${config.certAlias}-${stamp}.key`);
 await fs.promises.writeFile(archiveCert, certBody, { mode: 0o644 });

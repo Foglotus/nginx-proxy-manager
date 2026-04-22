@@ -77,9 +77,9 @@ const raw = fs.readFileSync(absPath, "utf8");
 const parsed = parser.parse(raw);
 const acme = parsed?.project?.acme;
 
-if (!acme || typeof acme !== "object") {
-throw new Error("Invalid pom.xml: missing <project><acme> section");
-}
+	if (!acme || typeof acme !== "object") {
+		throw new Error(`Invalid pom.xml at ${absPath}: missing <project><acme> section`);
+	}
 
 const domainValues = getTextList(acme?.domains?.domain);
 const extraArgs = getTextList(acme?.extraArgs?.arg);
