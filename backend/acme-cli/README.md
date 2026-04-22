@@ -7,7 +7,7 @@
 以本地 `pom.xml` 作为唯一配置源。建议先复制模板：
 
 ```bash
-cp /home/runner/work/nginx-proxy-manager/nginx-proxy-manager/backend/acme-cli/pom.example.xml /your/workdir/pom.xml
+cp ./acme-cli/pom.example.xml /your/workdir/pom.xml
 ```
 
 核心字段（`<project><acme>...</acme></project>`）：
@@ -66,7 +66,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/runner/work/nginx-proxy-manager/nginx-proxy-manager/backend
+WorkingDirectory=/path/to/project/backend
 ExecStart=/usr/bin/npm run acme-cli -- daemon --config /absolute/path/pom.xml
 Restart=always
 RestartSec=5
@@ -78,7 +78,7 @@ WantedBy=multi-user.target
 ## 5. cron 示例（定时 renew）
 
 ```cron
-0 * * * * cd /home/runner/work/nginx-proxy-manager/nginx-proxy-manager/backend && /usr/bin/npm run acme-cli -- renew --config /absolute/path/pom.xml >> /var/log/acme-cli.log 2>&1
+0 * * * * cd /path/to/project/backend && /usr/bin/npm run acme-cli -- renew --config /absolute/path/pom.xml >> /var/log/acme-cli.log 2>&1
 ```
 
 ## 6. 本地状态文件

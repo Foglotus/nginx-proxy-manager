@@ -154,7 +154,9 @@ if (config.challenge === "dns") {
 if (!config.dns.provider) {
 errors.push("acme.dns.provider is required when challenge is dns");
 		} else if (!(config.dns.provider in dnsPlugins)) {
-			errors.push(`acme.dns.provider '${config.dns.provider}' is not supported`);
+			errors.push(
+				`acme.dns.provider '${config.dns.provider}' is not supported. Available providers: ${Object.keys(dnsPlugins).join(", ")}`,
+			);
 		}
 
 if (!config.dns.credentials) {

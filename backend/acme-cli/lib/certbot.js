@@ -97,11 +97,13 @@ if (config.dns.propagationSeconds > 0) {
 args.push(`--${dnsPlugin.full_plugin_name}-propagation-seconds`, `${config.dns.propagationSeconds}`);
 }
 
-const options = {};
-if (config.dns.provider === "route53") {
-options.env = {
-...process.env,
-AWS_CONFIG_FILE: credentialsPath,
+	const options = {};
+	if (config.dns.provider === "route53") {
+		// certbot-dns-route53 reads AWS credentials from AWS_CONFIG_FILE
+		// instead of accepting a --dns-route53-credentials file argument.
+		options.env = {
+			...process.env,
+			AWS_CONFIG_FILE: credentialsPath,
 };
 }
 
