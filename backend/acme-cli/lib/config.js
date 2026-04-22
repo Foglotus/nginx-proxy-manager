@@ -56,7 +56,7 @@ return defaultValue;
 return parsed;
 };
 
-const resolveFilePath = (filePath) => {
+const resolveFilePath = (filePath, baseDir = process.cwd()) => {
 	if (typeof filePath !== "string" || !filePath.trim()) {
 		throw new Error("Expected a non-empty path value in pom.xml");
 	}
@@ -64,7 +64,7 @@ const resolveFilePath = (filePath) => {
 	if (path.isAbsolute(filePath)) {
 		return filePath;
 	}
-	return path.resolve(process.cwd(), filePath);
+	return path.resolve(baseDir, filePath);
 };
 
 const readPomConfig = (configPath) => {
@@ -73,9 +73,10 @@ if (!fs.existsSync(absPath)) {
 throw new Error(`Config file does not exist: ${absPath}`);
 }
 
-const raw = fs.readFileSync(absPath, "utf8");
-const parsed = parser.parse(raw);
-const acme = parsed?.project?.acme;
+	const raw = fs.readFileSync(absPath, "utf8");
+	const parsed = parser.parse(raw);
+	const acme = parsed?.project?.acme;
+	const configDir = path.dirname(absPath);
 
 	if (!acme || typeof acme !== "object") {
 		throw new Error(`Invalid pom.xml at ${absPath}: missing <project><acme> section`);
@@ -83,9 +84,9 @@ const acme = parsed?.project?.acme;
 
 const domainValues = getTextList(acme?.domains?.domain);
 const extraArgs = getTextList(acme?.extraArgs?.arg);
-const outputDir = resolveFilePath(acme.outputDir);
-const archiveDir = resolveFilePath(acme.archiveDir || path.join(outputDir, "archive"));
-const stateFile = resolveFilePath(acme.stateFile || path.join(outputDir, ".acme-state.json"));
+	const outputDir = resolveFilePath(acme.outputDir, configDir);
+	const archiveDir = resolveFilePath(acme.archiveDir || path.join(outputDir, "archive"), configDir);
+	const stateFile = resolveFilePath(acme.stateFile || path.join(outputDir, ".acme-state.json"), configDir);
 const certAlias = `${acme.certAlias || ""}`.trim();
 const certName = `${acme.certName || certAlias}`.trim();
 
@@ -152,9 +153,9 @@ errors.push("acme.webroot is required when challenge is http");
 if (config.challenge === "dns") {
 if (!config.dns.provider) {
 errors.push("acme.dns.provider is required when challenge is dns");
-} else if (typeof dnsPlugins[config.dns.provider] === "undefined") {
-errors.push(`acme.dns.provider '${config.dns.provider}' is not supported`);
-}
+		} else if (!(config.dns.provider in dnsPlugins)) {
+			errors.push(`acme.dns.provider '${config.dns.provider}' is not supported`);
+		}
 
 if (!config.dns.credentials) {
 errors.push("acme.dns.credentials is required when challenge is dns");

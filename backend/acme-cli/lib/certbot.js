@@ -65,7 +65,7 @@ return args;
 };
 
 const writeDnsCredentials = async (config) => {
-	const fileName = `credentials-${config.certName.replaceAll(/[^A-Za-z0-9_-]/g, "-")}`;
+	const fileName = `credentials-${config.certName.replace(/[^A-Za-z0-9_-]/g, "-")}`;
 const credentialsDir = "/etc/letsencrypt/credentials";
 await fs.promises.mkdir(credentialsDir, { recursive: true });
 const credentialsPath = path.join(credentialsDir, fileName);
